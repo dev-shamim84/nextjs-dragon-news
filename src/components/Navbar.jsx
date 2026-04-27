@@ -6,7 +6,7 @@ import NavLink from "./NavLink";
 
 const Navbar = () => {
   return (
-    <div className="container mx-auto flex justify-between gap-4 mt-6">
+    <div className="container mx-auto flex flex-col md:flex-row  md:justify-between items-center gap-4 mt-6">
       <div></div>
       <ul className="flex justify-between items-center text-gray-700 gap-3">
         <li>
@@ -21,7 +21,7 @@ const Navbar = () => {
       </ul>
       <div className="flex gap-2">
         <Image src={user} height={40} width={40} alt="user.png"></Image>
-        <Link href="/auth/login">
+        <Link href="/login">
           <button className="btn btn-dark">Log In</button>
         </Link>
       </div>
