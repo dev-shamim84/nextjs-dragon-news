@@ -1,8 +1,11 @@
 "use client";
 import { authClient } from "@/lib/auth-client.";
-import { redirect } from "next/dist/server/api-utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { BsEyeSlash } from "react-icons/bs";
+import { FaEye } from "react-icons/fa";
 
 const RegisterPage = () => {
   const {
@@ -10,18 +13,20 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const handleRegisterFunc = async (userData) => {
     const { name, photoUrl, email, password } = userData;
     const { data, error } = await authClient.signUp.email({
       name: name,
-      photoUrl: photoUrl,
+      image: photoUrl,
       email: email,
       password: password,
       callbackURL: "/",
     });
     if (data) {
       alert("register successfully");
-      redirect("/login");
+      router.push("/login");
     }
     if (error) {
       alert(`${error.message}`);
@@ -75,16 +80,22 @@ const RegisterPage = () => {
                 <p className="text-red-500">{errors.email.message}</p>
               )}
             </fieldset>
-            <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+            <fieldset className="fieldset relative bg-base-200 border-base-300 rounded-box w-xs border p-4">
               <legend className="fieldset-legend">Password</legend>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className="input"
                 placeholder="Enter your password"
                 {...register("password", {
                   required: "Password field is required",
                 })}
               />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-[40%] right-5"
+              >
+                {showPassword ? <FaEye size={20} /> : <BsEyeSlash size={20} />}
+              </span>
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
               )}
